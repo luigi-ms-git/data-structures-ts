@@ -5,16 +5,20 @@ class Node {
   private _data: any;
   private _isLeaf: boolean;
   private _parentKey: number;
+  private _left: Node | null;
+  private _right: Node | null;
 
   constructor(data: any){
     this._key = 0;
     this._data = data;
     this._isLeaf = true;
     this._parentKey = 0;
+    this._left = null;
+    this._right = null;
   }
 
-  public getNode(): string { 
-    return `{ key: ${this.key}, data: ${this.data} }`;
+  public getData(): string { 
+    return `{ key: ${this.key}, data: ${this.data}, isLeaf: ${this.isLeaf}, children: ${[this.left?.getData(), this.right?.getData()]} }`;
   }
 
   public get key(): number { return this._key; }
@@ -27,11 +31,19 @@ class Node {
 
   public get isLeaf(): boolean { return this._isLeaf; }
 
-  public set isLeaf(nIsLeaf: boolean){ this._isLeaf = nIsLeaf; };
+  public set isLeaf(nIsLeaf: boolean){ this._isLeaf = nIsLeaf; }
 
   public get parentKey(): number { return this._parentKey; }
 
   public set parentKey(nParentKey: number){ this._parentKey = nParentKey; }
+
+  public get left(): Node | null { return this._left; }
+
+  public set left(nLeft: Node | null){ this._left = nLeft; }
+
+  public get right(): Node | null { return this._right; }
+
+  public set right(nRight: Node | null){ this._right = nRight; }
 }
 
 class Heap {
@@ -46,25 +58,48 @@ class Heap {
     this._struct = [this._root];
   }
 
-  public insert(data: any, key: number): void {
+  public insert(data: any, key: number, parentKey?: number): void {
     if(key < this.root.key){
       const newNode = new Node(data);
       newNode.key = key;
 
-      if(newNode.key < this.struct[this.struct.length - 1].key){
-        newNode.parentKey = this.struct[this.struct.length - 2].key;
-        this.struct.splice(this.struct.length - 1, 0, newNode);
-      }else{
-        newNode.parentKey = this.struct[this.struct.length - 1].key;
-        this.struct.push(newNode);
-      }
-
-      this.struct[this.struct.length - 1].isLeaf = false;
+      if(parentKey && this.nodeExists(parentKey)){
+        const p = this.getNode(parentKey);
+        newNode.parentKey = parentKey;
+ 
+        if(newNode.key % 2 === 0) p.left = newNode;
+        else p.right = newNode;
+        
+        p.isLeaf = false;
+        this.struct[this.getNodeIndex(parentKey)] = p;
+      }else if(parentKey === undefined){
+        newNode.parentKey = this.root.key;
+        
+        if(newNode.key % 2 === 0) this.root.left = newNode;
+        else this.root.right = newNode;
+        this.root.isLeaf = false;
+      } 
+      
+      this.struct.push(newNode);
     }
   }
 
   public getAll(): Array<string> {
-    return this.struct.map(n => n.getNode());
+    return this.struct.map(n => n.getData());
+  }
+
+  public getNode(key: number): Node {
+    const found = this.struct.find(n => n.key === key);
+    return (found !== undefined) ? found : new Node(null); 
+  }
+
+  public getNodeIndex(key: number): number {
+    const index = this.struct.findIndex(n => n.key === key);
+    return (index !== undefined) ? index : 0; 
+  }
+
+  public nodeExists(key: number): boolean {
+    return (this.getNode(key).data !== null);
   }
 
   public get root(): Node { return this._root; }
@@ -87,7 +122,10 @@ console.log(h.getAll());
 h.insert("ola", 6);
 
 console.log(h.getAll());
-h.insert("hallo", 5);
+h.insert("hallo", 5, 7);
+
+console.log(h.getAll());
+h.insert("hola", 4, 7);
 
 console.log(h.getAll());
 
