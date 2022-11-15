@@ -1,4 +1,4 @@
-import DataStruct from './DataStruct';
+import DataStruct from '../DataStruct';
 
 class Node {
   private _data: any;
