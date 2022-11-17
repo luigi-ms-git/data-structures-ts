@@ -1,6 +1,6 @@
-import DataStruct from '../DataStruct';
+import LinearStruct from './LinearStruct';
 
-class Node {
+class ListNode {
   private _data: any;
   private _next: number;
 
@@ -18,14 +18,14 @@ class Node {
   public set next(nNext: number){ this._next = nNext; }
 }
 
-class LinkedList extends DataStruct {
-  private _head: Node;
-  private _last: Node;
+class LinkedList extends LinearStruct {
+  private _head: ListNode;
+  private _last: ListNode;
 
   constructor(){
     super();
-    super.front = new Node("HEAD");
-    super.back = new Node("NULL");
+    super.front = new ListNode("HEAD");
+    super.back = new ListNode("NULL");
     super.struct = [super.front, super.back];
     super.length = 2;
     super.front.next = 1;
@@ -35,7 +35,7 @@ class LinkedList extends DataStruct {
   }
 
   public insert(data: any): void {
-    const node = new Node(data);
+    const node = new ListNode(data);
 
     if(this.isEmpty()){
       node.next = super.length;
@@ -68,11 +68,11 @@ class LinkedList extends DataStruct {
     return super.length - 2 === 0;
   }
 
-  public get head(): Node { return this._head; }
+  public get head(): ListNode { return this._head; }
 
-  public set head(nHead: Node){ this._head = nHead; }
+  public set head(nHead: ListNode){ this._head = nHead; }
 
-  public get last(): Node { return this._last; }
+  public get last(): ListNode { return this._last; }
 
-  public set last(nLast: Node){ this._last = nLast; }
+  public set last(nLast: ListNode){ this._last = nLast; }
 }

@@ -1,4 +1,4 @@
-import DataStruct from '../DataStruct';
+import LinearStruct from './LinearStruct';
 
 class Item {
   private _key: string;
@@ -18,7 +18,7 @@ class Item {
   public set value(nValue: any){ this._value = nValue; }
 }
 
-class MapStruct extends DataStruct {
+class MapStruct extends LinearStruct {
   constructor(){
     super();
   }

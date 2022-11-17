@@ -1,9 +1,7 @@
-import DataStruct from '../DataStruct';
+import LinearStruct from './LinearStruct';
 
-class Queue extends DataStruct {
-  constructor(){
-    super();
-  }
+class Queue extends LinearStruct {
+  constructor(){ super(); }
 
   public enqueue(newItem: any): void {
     if(this.length + 1 <= this.MAX_LENGTH){

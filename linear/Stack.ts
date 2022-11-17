@@ -1,6 +1,6 @@
-import DataStruct from '../DataStruct';
+import LinearStruct from './LinearStruct';
 
-class Stack extends DataStruct {
+class Stack extends LinearStruct {
   private _top: any;
 
   constructor(){

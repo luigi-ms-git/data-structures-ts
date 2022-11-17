@@ -1,4 +1,4 @@
-class DataStruct {
+class LinearStruct {
   private _struct: Array<any>;
   private _length: number;
   private _front: any;
@@ -36,4 +36,4 @@ class DataStruct {
   public set back(nBack: any){ this._back = nBack; }
 }
 
-export default DataStruct;
+export default LinearStruct;
